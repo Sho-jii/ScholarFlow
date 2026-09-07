@@ -1,0 +1,29 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# Next.js
+/.next/
+/out/
+/build
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc & Debug
+.DS_Store
+*.pem
+*.log*
+.vscode/
+
+# Environment files
+.env*
+!.env.example
+
+# Project internal specs
+AGENT.md
+PROJECT_SCOPE.md
+AGENTS.md
+GEMINI.md

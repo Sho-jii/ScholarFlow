@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ─── ScholarFlow Core Color Tokens ─── */
+  --text: #060506;
+  --background: #fdfcfd;
+  --primary: #8b718e;     /* Elegant academic plum */
+  --secondary: #b6beac;   /* Sage gray */
+  --accent: #93a999;      /* Soft celadon / jade */
+
+  /* ─── Semantic Base Tokens (Light Mode) ─── */
+  --foreground: 0 0% 2%;              /* #060506 */
+  --card: 0 0% 100%;                  /* #ffffff */
+  --card-foreground: 0 0% 2%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 2%;
+
+  --primary-foreground: 0 0% 100%;
+  --secondary-foreground: 0 0% 10%;
+  --accent-foreground: 0 0% 10%;
+
+  --muted: 80 8% 92%;
+  --muted-foreground: 0 0% 40%;
+  --border: 0 0% 88%;
+  --input: 0 0% 88%;
+  --ring: 295 12% 50%;
+
+  /* Status Colors */
+  --destructive: 350 65% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --warning: 38 85% 52%;
+  --warning-foreground: 0 0% 100%;
+  --success: 140 15% 55%;
+  --success-foreground: 0 0% 100%;
+
+  /* Elevation & Surfaces */
+  --surface-1: #fdfcfd;
+  --surface-2: #f6f5f6;
+  --surface-3: #eae8eb;
+  --elev-border: rgba(6, 5, 6, 0.08);
+  --elev-shadow: rgba(6, 5, 6, 0.06);
+
+  /* Sidebar */
+  --sidebar: #f8f6f8;
+  --sidebar-foreground: #060506;
+  --sidebar-border: rgba(6, 5, 6, 0.08);
+
+  /* Radius */
+  --radius: 0.75rem;
+  --radius-card: 36px;
+  --radius-pill: 9999px;
+
+  /* Typography - Modern Dashboard Sans-Serif Fonts from Google Fonts */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.dark {
+  /* ─── Dark Mode (Clean Text & Background Swap) ─── */
+  --text: #fdfcfd;
+  --background: #060506;
+
+  --foreground: 0 0% 99%;             /* #fdfcfd */
+  --card: 0 0% 6%;                    /* #0f0d0f deep dark card */
+  --card-foreground: 0 0% 99%;
+  --popover: 0 0% 6%;
+  --popover-foreground: 0 0% 99%;
+
+  --primary-foreground: 0 0% 100%;
+  --secondary-foreground: 0 0% 99%;
+  --accent-foreground: 0 0% 99%;
+
+  --muted: 295 8% 14%;
+  --muted-foreground: 0 0% 65%;
+  --border: 0 0% 16%;
+  --input: 0 0% 16%;
+  --ring: 295 12% 60%;
+
+  --surface-1: #060506;
+  --surface-2: #121012;
+  --surface-3: #1c191c;
+  --elev-border: rgba(253, 252, 253, 0.1);
+  --elev-shadow: rgba(0, 0, 0, 0.45);
+
+  --sidebar: #0a090a;
+  --sidebar-foreground: #fdfcfd;
+  --sidebar-border: rgba(253, 252, 253, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--text);
+  --color-primary: var(--primary);
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: var(--accent);
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+/* ─── Base Styles ─── */
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.font-display {
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Tabular numbers for scores and percentages */
+.text-metric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ─── HITOVIS InsetCard Container Style ─── */
+.inset-card {
+  border-radius: 36px;
+  background-color: var(--background);
+  color: var(--text);
+  box-shadow: inset 0 0 5px rgba(6, 5, 6, 0.18);
+  border: 1px solid var(--elev-border);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.dark .inset-card {
+  box-shadow: inset 0 0 5px rgba(253, 252, 253, 0.12);
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}

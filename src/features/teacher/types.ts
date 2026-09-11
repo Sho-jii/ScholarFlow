@@ -1,3 +1,5 @@
+import type { AlignmentIssue } from "@/features/audit/types";
+
 export interface CohortGroup {
   id: string;
   groupNumber: number;
@@ -10,4 +12,5 @@ export interface CohortGroup {
   unalignedItemsCount: number;
   mockTurnsCount: number;
   clearanceIssued: boolean;
+  alignmentMatrix?: AlignmentIssue[];
 }

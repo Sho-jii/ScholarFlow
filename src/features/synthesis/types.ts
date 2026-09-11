@@ -5,8 +5,11 @@ export interface SynthesisMessage {
   timestamp: string;
 }
 
-export interface SynthesisSession {
+export interface SynthesisSessionItem {
   id: string;
   topic: string;
-  messages: SynthesisMessage[];
+  createdAt: string;
+  updatedAt: string;
+  messageCount: number;
+  lastSnippet: string;
 }

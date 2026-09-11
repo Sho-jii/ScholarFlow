@@ -63,13 +63,13 @@ export function AlignmentMatrixTable({ items }: AlignmentMatrixTableProps) {
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-full bg-muted/60 border border-border/50 self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 self-start sm:self-auto">
           <button
             type="button"
             onClick={() => setFilter("ALL")}
             className={`px-3.5 py-1 text-xs font-semibold rounded-full transition-all cursor-pointer ${
               filter === "ALL"
-                ? "bg-primary text-white shadow-xs"
+                ? "bg-[#0d1217] dark:bg-white text-white dark:text-[#0d1217] shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -105,10 +105,10 @@ export function AlignmentMatrixTable({ items }: AlignmentMatrixTableProps) {
         {filteredItems.map((item, index) => (
           <div
             key={index}
-            className={`rounded-2xl border p-5 transition-all space-y-3 ${
+            className={`rounded-2xl border p-4 sm:p-5 transition-all space-y-3 ${
               item.status === "CRITICAL_GAP" || item.status === "MISALIGNED"
-                ? "border-destructive/30 bg-destructive/5 dark:bg-destructive/10"
-                : "border-border/70 bg-card/50"
+                ? "border-destructive/30 bg-destructive/5 dark:bg-destructive/10 shadow-xs"
+                : "border-black/10 dark:border-white/10 bg-white/70 dark:bg-card/40 backdrop-blur-xs shadow-xs"
             }`}
           >
             {/* Top row: SOP Statement & Status */}
@@ -117,7 +117,7 @@ export function AlignmentMatrixTable({ items }: AlignmentMatrixTableProps) {
                 <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">
                   Statement of the Problem (Chapter 1)
                 </span>
-                <p className="font-semibold text-sm text-foreground leading-snug">
+                <p className="font-semibold text-xs sm:text-sm text-foreground leading-snug">
                   {item.sopStatement}
                 </p>
               </div>
@@ -125,8 +125,8 @@ export function AlignmentMatrixTable({ items }: AlignmentMatrixTableProps) {
             </div>
 
             {/* Middle row: Variables & Instrument mapping */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3 border-t border-border/40 text-xs">
-              <div className="rounded-xl bg-background/80 border border-border/50 p-3 space-y-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3 border-t border-black/5 dark:border-white/5 text-xs">
+              <div className="rounded-xl bg-background/90 border border-black/10 dark:border-white/10 p-3 space-y-1">
                 <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
                   Conceptual Framework Variable
                 </span>
@@ -135,7 +135,7 @@ export function AlignmentMatrixTable({ items }: AlignmentMatrixTableProps) {
                 </p>
               </div>
 
-              <div className="rounded-xl bg-background/80 border border-border/50 p-3 space-y-1">
+              <div className="rounded-xl bg-background/90 border border-black/10 dark:border-white/10 p-3 space-y-1">
                 <span className="text-[10px] uppercase font-bold tracking-wider text-secondary-foreground font-semibold">
                   Chapter 3 Gathering Tool / Questionnaire Item
                 </span>
@@ -146,7 +146,7 @@ export function AlignmentMatrixTable({ items }: AlignmentMatrixTableProps) {
             </div>
 
             {/* Bottom row: Feedback & Advisory */}
-            <div className="rounded-xl bg-muted/40 p-3 text-xs flex items-start gap-2.5">
+            <div className="rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 p-3 text-xs flex items-start gap-2.5">
               <Info className="size-4 text-primary shrink-0 mt-0.5" />
               <p className="text-muted-foreground leading-relaxed">
                 <span className="font-bold text-foreground">Adviser Action Item: </span>

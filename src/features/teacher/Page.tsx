@@ -1,60 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "@/layout";
 import { InsetCard } from "@/components/ui/inset-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SectionRiskHeatmap } from "./components/SectionRiskHeatmap";
-import { DEMO_MANUSCRIPT_AUDIT } from "@/services/mock/fallbackData";
 import { AlignmentMatrixTable } from "@/features/audit/components/AlignmentMatrixTable";
-import { X, ExternalLink } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import type { CohortGroup } from "./types";
 
-const INITIAL_COHORT: CohortGroup[] = [
-  {
-    id: "g1",
-    groupNumber: 4,
-    title: "Automated Solar-Powered Hydroponic Monitoring System in Calapan City",
-    strand: "STEM",
-    membersCount: 5,
-    readinessScore: 84,
-    synthesisGrade: "A",
-    status: "DEFENSE_READY",
-    unalignedItemsCount: 1,
-    mockTurnsCount: 3,
-    clearanceIssued: false,
-  },
-  {
-    id: "g2",
-    groupNumber: 2,
-    title: "Lived Experiences of Senior High Students Balancing Academic Demands & Gig Work",
-    strand: "HUMSS",
-    membersCount: 4,
-    readinessScore: 92,
-    synthesisGrade: "A",
-    status: "DEFENSE_READY",
-    unalignedItemsCount: 0,
-    mockTurnsCount: 5,
-    clearanceIssued: true,
-  },
-  {
-    id: "g3",
-    groupNumber: 7,
-    title: "Synthesizing Banana Pseudostem Fibers for Public Market Biodegradable Packaging",
-    strand: "TVL-IA",
-    membersCount: 4,
-    readinessScore: 58,
-    synthesisGrade: "C",
-    status: "CRITICAL_GAPS",
-    unalignedItemsCount: 3,
-    mockTurnsCount: 1,
-    clearanceIssued: false,
-  },
-];
-
 export function TeacherFeaturePage() {
+  const [cohort, setCohort] = useState<CohortGroup[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState<CohortGroup | null>(null);
+
+  useEffect(() => {
+    async function loadCohort() {
+      try {
+        setIsLoading(true);
+        const res = await fetch("/api/teacher/cohort");
+        const data = await res.json();
+        if (data.cohort) {
+          setCohort(data.cohort);
+        }
+      } catch (err) {
+        console.error("Failed to load teacher cohort:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    void loadCohort();
+  }, []);
 
   return (
     <Layout>
@@ -70,14 +47,23 @@ export function TeacherFeaturePage() {
             </p>
           </div>
 
-          <Badge variant="default">Adviser: Mrs. Carmela Reyes</Badge>
+          <Badge variant="default">Research Adviser Portal</Badge>
         </div>
 
         {/* Section Risk Heatmap Component */}
-        <SectionRiskHeatmap
-          groups={INITIAL_COHORT}
-          onSelectGroup={(g) => setSelectedGroup(g)}
-        />
+        {isLoading ? (
+          <InsetCard className="p-12 flex flex-col items-center justify-center space-y-3">
+            <Loader2 className="size-8 text-primary animate-spin" />
+            <p className="text-xs text-muted-foreground animate-pulse">
+              Loading research cohort risk metrics from Supabase...
+            </p>
+          </InsetCard>
+        ) : (
+          <SectionRiskHeatmap
+            groups={cohort}
+            onSelectGroup={(g) => setSelectedGroup(g)}
+          />
+        )}
 
         {/* Inspection Panel for Selected Group */}
         {selectedGroup && (
@@ -101,10 +87,11 @@ export function TeacherFeaturePage() {
               </Button>
             </div>
 
-            <AlignmentMatrixTable items={DEMO_MANUSCRIPT_AUDIT.alignmentMatrix} />
+            <AlignmentMatrixTable items={selectedGroup.alignmentMatrix || []} />
           </div>
         )}
       </div>
     </Layout>
   );
 }
+

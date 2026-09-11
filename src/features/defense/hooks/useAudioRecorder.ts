@@ -18,7 +18,7 @@ export function useAudioRecorder(onTranscriptionComplete?: (text: string) => voi
       setIsFallbackMode(true);
       setIsRecording(true);
       const simulatedText =
-        "For our sampling strategy, we utilized purposive sampling of 40 hydroponic lettuce plants across two separate test troughs. While this pilot size was restricted by laboratory greenhouse space in Canubing National High School, we controlled for ambient temperature and standard EC calibration.";
+        "For our sampling strategy, we utilized purposive sampling of 40 hydroponic lettuce plants across two separate test troughs. While this sample size was restricted by greenhouse facility space, we rigorously controlled for ambient water temperature and executed daily electrical conductivity sensor buffer calibrations.";
       setTranscript(simulatedText);
       return;
     }

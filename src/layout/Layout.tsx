@@ -12,11 +12,11 @@ export function Layout({ children }: LayoutProps) {
   // In production, loaded from active Supabase session
   const defaultProfile: UserProfile = {
     id: "demo-user-id",
-    email: "student@canubing.deped.gov.ph",
-    full_name: "Group 4: STEM Copernicus",
+    email: "researcher@axiomproof.org",
+    full_name: "Research Cohort Alpha",
     role: "student",
-    school_name: "Canubing National High School",
-    group_title: "Solar-Powered Automated Hydroponics in Calapan City",
+    school_name: "Academic Research Division",
+    group_title: "Automated Sensor & Empirical Research Manuscript",
   };
 
   return (
@@ -39,8 +39,8 @@ export function Layout({ children }: LayoutProps) {
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
           profile={defaultProfile}
         />
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-          <div className="mx-auto max-w-7xl">{children}</div>
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10">
+          <div className="mx-auto max-w-[1440px] w-full">{children}</div>
         </main>
       </div>
     </div>

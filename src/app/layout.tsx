@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 
 export const metadata: Metadata = {
-  title: "ScholarFlow | DepEd Research Verification Engine",
+  title: "AxiomProof | Deterministic Academic Verification & Viva-Voce Defense Engine",
   description:
-    "Formative evaluation and academic alignment auditor for DepEd Senior High School research (PR1, PR2, 3Is).",
+    "Deterministic manuscript structural alignment, anti-ghostwriting literature synthesis, and oral defense panel simulation for academic researchers and thesis candidates.",
 };
 
 export const viewport: Viewport = {
@@ -35,7 +36,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                const storedTheme = localStorage.getItem('scholarflow_theme');
+                const storedTheme = localStorage.getItem('axiomproof_theme') || localStorage.getItem('scholarflow_theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
                   document.documentElement.classList.add('dark');
@@ -48,7 +49,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen bg-background text-foreground transition-colors duration-200 selection:bg-primary/20 selection:text-primary">
-        {children}
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
         <Toaster
           position="bottom-right"
           toastOptions={{

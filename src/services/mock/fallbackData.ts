@@ -24,11 +24,11 @@ export const DEMO_MANUSCRIPT_AUDIT: DemoAuditReport = {
   localContextDetected: true,
   synthesisGrade: "A",
   summaryCritique:
-    "The manuscript demonstrates strong thematic synthesis in Chapter 2, referencing local climate conditions in Calapan City, Oriental Mindoro. However, Chapter 1 SOP #3 lacks an operationalized survey questionnaire item in the Chapter 3 data-gathering instrument.",
+    "The manuscript demonstrates strong thematic synthesis in Chapter 2, referencing empirical tropical climate conditions and transpiration dynamics. However, Chapter 1 SOP #3 lacks an operationalized sensor calibration protocol in the Chapter 3 data-gathering instrument.",
   alignmentMatrix: [
     {
       sopStatement:
-        "1. What is the baseline power generation efficiency of the 50W polycrystalline solar panel during peak sunlight hours in Barangay Canubing?",
+        "1. What is the baseline power generation efficiency of the 50W polycrystalline solar panel during peak sunlight hours under ambient regional irradiance?",
       mappedVariable: "Solar Power Output (Watts / Lux)",
       instrumentItem: "Instrument Item 1.1–1.4: Daily Multimeter & Pyranometer Log Sheet",
       status: "ALIGNED",
@@ -53,7 +53,7 @@ export const DEMO_MANUSCRIPT_AUDIT: DemoAuditReport = {
     },
     {
       sopStatement:
-        "4. What is the cost-benefit viability of deploying this automated system compared to traditional soil-based backyard farming for DepEd Gulayan sa Paaralan?",
+        "4. What is the cost-benefit viability of deploying this automated system compared to traditional soil-based farming methods for community agricultural adoption?",
       mappedVariable: "Return on Investment (ROI) & Maintenance Cost per Crop Cycle",
       instrumentItem: "Instrument Item 4.1–4.5: Cost Analysis Worksheet & Farmer Interview Protocol",
       status: "ALIGNED",

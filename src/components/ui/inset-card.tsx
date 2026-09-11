@@ -11,7 +11,7 @@ export const InsetCard = forwardRef<HTMLElement, InsetCardProps>(
       <section
         ref={ref}
         className={cn(
-          "overflow-hidden rounded-[32px] md:rounded-[40px] bg-background text-foreground shadow-[inset_0_0_5px_rgba(6,5,6,0.18)] dark:shadow-[inset_0_0_5px_rgba(253,252,253,0.12)] border border-black/5 dark:border-white/10 transition-all",
+          "overflow-hidden rounded-2xl md:rounded-3xl bg-card text-card-foreground border border-black/10 dark:border-white/10 shadow-xs transition-all duration-300",
           className
         )}
         {...props}

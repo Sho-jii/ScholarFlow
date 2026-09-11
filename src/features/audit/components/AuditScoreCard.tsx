@@ -49,16 +49,16 @@ export function AuditScoreCard({ report }: { report: AuditReportData }) {
         </div>
 
         {/* Right: Score Gauge Box */}
-        <div className="shrink-0 flex items-center justify-center">
+        <div className="w-full md:w-auto shrink-0 flex items-center justify-center">
           <div
-            className={`flex flex-col items-center justify-center rounded-[28px] border p-6 min-w-[150px] shadow-sm ${getScoreColor(
+            className={`w-full sm:w-auto flex flex-col items-center justify-center rounded-[28px] border p-6 min-w-[160px] shadow-xs backdrop-blur-xs ${getScoreColor(
               report.readinessScore
             )}`}
           >
             <div className="font-display text-4xl md:text-5xl font-black text-metric">
               {report.readinessScore}%
             </div>
-            <span className="text-[11px] font-bold uppercase tracking-wider mt-1 text-foreground/80">
+            <span className="text-[11px] font-bold uppercase tracking-wider mt-1.5 text-foreground/85">
               {report.readinessScore >= 80
                 ? "Defense Ready"
                 : report.readinessScore >= 60

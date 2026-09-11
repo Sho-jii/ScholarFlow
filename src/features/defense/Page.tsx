@@ -108,11 +108,11 @@ export function DefenseFeaturePage() {
 
         {/* Question Panel Inset Card */}
         <InsetCard className="p-6 md:p-8 space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <span className="text-[10px] uppercase font-bold tracking-wider text-destructive">
               Targeted Manuscript Weakness: {currentQuestion.targetedWeakness}
             </span>
-            <Badge variant="outline">DepEd Oral Rubric</Badge>
+            <Badge variant="outline" className="self-start sm:self-auto">DepEd Oral Rubric</Badge>
           </div>
 
           <h3 className="font-display text-lg md:text-xl font-bold text-foreground leading-relaxed">
@@ -135,7 +135,7 @@ export function DefenseFeaturePage() {
           </div>
 
           {/* Audio Waveform */}
-          <div className="rounded-2xl border border-border/60 bg-muted/20 py-2">
+          <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 py-2">
             <AudioWaveform isRecording={isRecording} />
           </div>
 
@@ -146,7 +146,7 @@ export function DefenseFeaturePage() {
               onChange={(e) => setTranscript(e.target.value)}
               placeholder="Your spoken words will appear here in real-time. You can also edit or type your oral defense manually..."
               rows={4}
-              className="w-full rounded-2xl border border-border bg-background p-4 text-xs md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none leading-relaxed"
+              className="w-full rounded-2xl border border-black/10 dark:border-white/10 bg-background/90 p-4 text-xs md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none leading-relaxed"
             />
             {isFallbackMode && (
               <p className="text-[11px] text-muted-foreground">
@@ -156,15 +156,15 @@ export function DefenseFeaturePage() {
           </div>
 
           {/* Controls: Record / Stop / Submit */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               {!isRecording ? (
                 <Button
                   type="button"
                   variant="default"
                   size="default"
                   onClick={startRecording}
-                  className="gap-2"
+                  className="gap-2 flex-1 sm:flex-initial"
                 >
                   <Mic className="size-4" />
                   <span>Start Speaking</span>
@@ -175,7 +175,7 @@ export function DefenseFeaturePage() {
                   variant="destructive"
                   size="default"
                   onClick={stopRecording}
-                  className="gap-2"
+                  className="gap-2 flex-1 sm:flex-initial"
                 >
                   <Square className="size-4 fill-white" />
                   <span>Stop Recording</span>
@@ -188,7 +188,7 @@ export function DefenseFeaturePage() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setTranscript("")}
-                  className="text-xs text-muted-foreground"
+                  className="text-xs text-muted-foreground hover:text-foreground"
                 >
                   Clear Transcript
                 </Button>
@@ -197,11 +197,11 @@ export function DefenseFeaturePage() {
 
             <Button
               type="button"
-              variant="accent"
+              variant="outline"
               size="default"
               onClick={handleSubmitDefense}
               disabled={isSubmitting || !transcript.trim()}
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto"
             >
               {isSubmitting ? (
                 <Loader2 className="size-4 animate-spin" />

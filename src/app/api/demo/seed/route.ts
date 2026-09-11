@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/services/supabase/server";
+import { createClient, createAdminClient } from "@/services/supabase/server";
 import { DEMO_MANUSCRIPT_AUDIT, DEMO_RESEARCH_GROUPS } from "@/services/mock/fallbackData";
 
 export async function POST() {
@@ -7,11 +7,38 @@ export async function POST() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    // If user is authenticated, use their ID. Otherwise, use a stable dummy UUID for demo
-    const effectiveUserId = user?.id || "00000000-0000-0000-0000-000000000001";
+    // Use admin client to ensure seed operations bypass restrictive RLS policies
+    const admin = createAdminClient();
+
+    let effectiveUserId = user?.id;
+
+    if (!effectiveUserId) {
+      // Find or create demo teacher user via admin auth
+      const { data: existingUsers } = await admin.auth.admin.listUsers();
+      const demoUser = existingUsers?.users?.find((u) => u.email === "adviser@canubing.deped.gov.ph");
+
+      if (demoUser) {
+        effectiveUserId = demoUser.id;
+      } else {
+        const { data: newUser, error: createErr } = await admin.auth.admin.createUser({
+          email: "adviser@canubing.deped.gov.ph",
+          password: "DepEdScholar2026!",
+          email_confirm: true,
+          user_metadata: {
+            full_name: "Mrs. Carmela Reyes (Adviser)",
+            role: "teacher",
+            school_name: "Canubing National High School",
+          },
+        });
+        if (createErr || !newUser.user) {
+          throw new Error(createErr?.message || "Failed to create demo adviser account");
+        }
+        effectiveUserId = newUser.user.id;
+      }
+    }
 
     // Upsert demo teacher profile
-    await supabase.from("profiles").upsert({
+    await admin.from("profiles").upsert({
       id: effectiveUserId,
       email: user?.email || "adviser@canubing.deped.gov.ph",
       full_name: "Mrs. Carmela Reyes (Adviser)",
@@ -20,7 +47,7 @@ export async function POST() {
     });
 
     // Create or find demo section
-    const { data: section } = await supabase
+    const { data: section } = await admin
       .from("sections")
       .upsert(
         {
@@ -39,7 +66,7 @@ export async function POST() {
 
     if (sectionId) {
       for (const groupData of DEMO_RESEARCH_GROUPS) {
-        const { data: group } = await supabase
+        const { data: group } = await admin
           .from("research_groups")
           .insert({
             section_id: sectionId,
@@ -51,7 +78,7 @@ export async function POST() {
           .single();
 
         if (group && groupData.isTargetAudit) {
-          const { data: manuscript } = await supabase
+          const { data: manuscript } = await admin
             .from("manuscripts")
             .insert({
               group_id: group.id,
@@ -65,7 +92,7 @@ export async function POST() {
             .single();
 
           if (manuscript) {
-            const { data: report } = await supabase
+            const { data: report } = await admin
               .from("audit_reports")
               .insert({
                 manuscript_id: manuscript.id,
@@ -86,7 +113,7 @@ export async function POST() {
                 status: item.status,
                 feedback: item.feedback,
               }));
-              await supabase.from("alignment_issues").insert(issues);
+              await admin.from("alignment_issues").insert(issues);
             }
           }
         }

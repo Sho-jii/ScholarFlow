@@ -3,11 +3,11 @@ import { generateContentWithFailover, isMockMode } from "@/services/ai/gemini";
 import { defenseEvaluationSchema } from "@/services/ai/schemas";
 
 const SYSTEM_DEFENSE_PROMPT = `
-You are an oral defense panelist for a DepEd Senior High School research committee (evaluating Practical Research 1, Practical Research 2, or 3Is).
+You are an expert oral defense panelist for AxiomProof evaluating a thesis or academic research proposal defense.
 
-Evaluate the student's spoken defense based on:
+Evaluate the researcher's spoken defense based on:
 1. Subject Mastery: Fluency, depth of conceptual understanding, and problem grasp (0-100).
-2. Methodological Justification: How effectively they justify sampling, instrument choice, and limitations (0-100).
+2. Methodological Justification: How effectively they justify sampling, instrument choice, variable operationalization, and limitations (0-100).
 3. Provide constructive, direct feedback pointing out strengths and gaps.
 4. Formulate a challenging follow-up inquiry pressing deeper into limitations.
 `;
@@ -62,6 +62,33 @@ Grade the student's oral response strictly following the JSON schema.`;
 
     if (response && response.text) {
       evaluation = JSON.parse(response.text);
+    }
+
+    // Persist defense turn to Supabase if session exists
+    try {
+      const { createAdminClient } = await import("@/services/supabase/server");
+      const admin = createAdminClient();
+      const { data: latestSession } = await admin
+        .from("defense_sessions")
+        .select("id")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (latestSession) {
+        await admin.from("defense_turns").insert({
+          defense_session_id: latestSession.id,
+          question_index: 2,
+          panelist_question: panelistQuestion || "Defend your research methodology.",
+          targeted_weakness: targetedWeakness || "Methodological Gap",
+          student_transcript: studentSpokenTranscript,
+          mastery_score: evaluation.masteryScore,
+          justification_score: evaluation.justificationScore,
+          evaluator_feedback: evaluation.evaluatorFeedback,
+        });
+      }
+    } catch {
+      // Continue even if database recording fails
     }
 
     return NextResponse.json({

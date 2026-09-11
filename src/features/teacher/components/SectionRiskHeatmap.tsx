@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InsetCard } from "@/components/ui/inset-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,14 +25,26 @@ interface SectionRiskHeatmapProps {
 export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmapProps) {
   const [cohort, setCohort] = useState<CohortGroup[]>(groups);
 
-  const handleIssueClearance = (groupId: string, e: React.MouseEvent) => {
+  useEffect(() => {
+    setCohort(groups);
+  }, [groups]);
+
+  const handleIssueClearance = async (groupId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setCohort((prev) =>
-      prev.map((g) =>
-        g.id === groupId ? { ...g, clearanceIssued: true } : g
-      )
-    );
-    toast.success("Digital Defense Clearance Badge successfully issued!");
+    try {
+      setCohort((prev) =>
+        prev.map((g) => (g.id === groupId ? { ...g, clearanceIssued: true } : g))
+      );
+      const res = await fetch("/api/teacher/cohort", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ groupId, clearanceIssued: true }),
+      });
+      if (!res.ok) throw new Error("Failed to persist clearance");
+      toast.success("Digital Defense Clearance Badge successfully issued!");
+    } catch (err: unknown) {
+      toast.error("Failed to issue clearance in database");
+    }
   };
 
   const readyCount = cohort.filter((g) => g.status === "DEFENSE_READY").length;
@@ -43,7 +55,7 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
     <div className="space-y-6">
       {/* 3-Column Cohort Health Tiers */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <InsetCard className="p-5 border-primary/40 bg-primary/5">
+        <InsetCard className="p-5 border-black/10 dark:border-white/10 bg-primary/5 shadow-xs backdrop-blur-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
               Defense Ready (80–100%)
@@ -55,7 +67,7 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
           </div>
         </InsetCard>
 
-        <InsetCard className="p-5 border-warning/40 bg-warning/5">
+        <InsetCard className="p-5 border-black/10 dark:border-white/10 bg-warning/5 shadow-xs backdrop-blur-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-warning">
               Moderate Gaps (60–79%)
@@ -67,7 +79,7 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
           </div>
         </InsetCard>
 
-        <InsetCard className="p-5 border-destructive/40 bg-destructive/5">
+        <InsetCard className="p-5 border-black/10 dark:border-white/10 bg-destructive/5 shadow-xs backdrop-blur-xs">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-destructive">
               Critical Gaps (&lt;60%)
@@ -81,8 +93,8 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
       </div>
 
       {/* Cohort Groups Table / Cards */}
-      <InsetCard className="p-6 md:p-8 space-y-4">
-        <div className="flex items-center justify-between border-b border-border/50 pb-4">
+      <InsetCard className="p-5 sm:p-6 md:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-black/10 dark:border-white/10 pb-4">
           <div>
             <h3 className="font-display text-lg font-bold text-foreground">
               Active Section Research Groups (12 - STEM Copernicus)
@@ -91,7 +103,7 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
               Click any research team to inspect detected misalignment matrices and oral transcripts
             </p>
           </div>
-          <Badge variant="outline">DepEd Adviser Portal</Badge>
+          <Badge variant="outline" className="self-start sm:self-auto">DepEd Adviser Portal</Badge>
         </div>
 
         <div className="space-y-3">
@@ -99,7 +111,7 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
             <div
               key={group.id}
               onClick={() => onSelectGroup(group)}
-              className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl border border-border/70 bg-card/60 hover:border-primary/50 hover:bg-muted/30 transition-all cursor-pointer"
+              className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-card/40 hover:border-black/30 dark:hover:border-white/30 backdrop-blur-xs transition-all duration-300 cursor-pointer shadow-xs"
             >
               {/* Left Details */}
               <div className="space-y-2 flex-1 min-w-0">
@@ -118,11 +130,11 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
                   )}
                 </div>
 
-                <h4 className="font-display font-bold text-sm md:text-base text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                <h4 className="font-display font-bold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors line-clamp-1">
                   {group.title}
                 </h4>
 
-                <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Users className="size-3.5 text-muted-foreground" /> {group.membersCount} Students
                   </span>
@@ -139,8 +151,8 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
               </div>
 
               {/* Right: Score & Clearance Action */}
-              <div className="flex items-center gap-4 shrink-0 justify-between md:justify-end">
-                <div className="text-right">
+              <div className="flex items-center gap-3 sm:gap-4 shrink-0 justify-between md:justify-end border-t md:border-t-0 pt-3 md:pt-0 border-black/5 dark:border-white/5">
+                <div className="text-left md:text-right">
                   <div className="font-display text-2xl md:text-3xl font-black text-metric text-primary">
                     {group.readinessScore}%
                   </div>
@@ -154,7 +166,7 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
                     size="sm"
                     variant="default"
                     onClick={(e) => handleIssueClearance(group.id, e)}
-                    className="rounded-full text-xs gap-1.5"
+                    className="rounded-full text-xs gap-1.5 px-4"
                   >
                     <ShieldCheck className="size-3.5" />
                     <span>Issue Clearance</span>
@@ -164,10 +176,10 @@ export function SectionRiskHeatmap({ groups, onSelectGroup }: SectionRiskHeatmap
                     size="sm"
                     variant="outline"
                     disabled
-                    className="rounded-full text-xs text-success border-success/40 bg-success/10 gap-1.5"
+                    className="rounded-full text-xs text-success border-success/40 bg-success/10 gap-1.5 px-4"
                   >
                     <CheckCircle className="size-3.5 text-success" />
-                    <span>Cleared for Defense</span>
+                    <span>Cleared</span>
                   </Button>
                 )}
               </div>

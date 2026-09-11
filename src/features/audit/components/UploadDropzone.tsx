@@ -34,7 +34,7 @@ export function UploadDropzone({ onAuditComplete }: UploadDropzoneProps) {
       formData.append("fileHash", fileHash);
       formData.append("fileName", file.name);
 
-      setStageMessage("Running Gemini 1.5 structural alignment audit...");
+      setStageMessage("Running Gemini 3.5 structural alignment audit...");
 
       const res = await fetch("/api/audit", {
         method: "POST",
@@ -90,10 +90,10 @@ export function UploadDropzone({ onAuditComplete }: UploadDropzoneProps) {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`flex flex-col items-center justify-center rounded-[28px] border-2 border-dashed p-8 md:p-12 text-center transition-all ${
+        className={`flex flex-col items-center justify-center rounded-[28px] border-2 border-dashed p-6 sm:p-8 md:p-12 text-center transition-all ${
           isDragging
             ? "border-primary bg-primary/5 scale-[1.01]"
-            : "border-border/80 hover:border-primary/50 hover:bg-muted/30"
+            : "border-black/15 dark:border-white/15 hover:border-black/30 dark:hover:border-white/30 bg-black/[0.02] dark:bg-white/[0.02]"
         }`}
       >
         <input
@@ -115,16 +115,16 @@ export function UploadDropzone({ onAuditComplete }: UploadDropzoneProps) {
             </p>
           </div>
         ) : (
-          <div className="flex flex-col items-center space-y-4">
-            <div className="grid size-14 place-items-center rounded-3xl bg-primary/10 text-primary shadow-xs">
-              <UploadCloud className="size-7" />
+          <div className="flex flex-col items-center space-y-4 max-w-md">
+            <div className="grid size-14 place-items-center rounded-3xl bg-[#0d1217] text-white dark:bg-white dark:text-[#0d1217] shadow-sm">
+              <UploadCloud className="size-6" />
             </div>
 
             <div className="space-y-1">
               <h4 className="font-display text-base font-bold text-foreground">
                 Upload Senior High Research Draft (Chapters 1–3)
               </h4>
-              <p className="text-xs text-muted-foreground max-w-sm">
+              <p className="text-xs text-muted-foreground">
                 Drag and drop your PDF or DOCX file here, or browse from your computer.
                 SHA-256 fingerprinting prevents redundant LLM token spend.
               </p>
@@ -135,7 +135,7 @@ export function UploadDropzone({ onAuditComplete }: UploadDropzoneProps) {
                 type="button"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
-                className="gap-2"
+                className="gap-2 rounded-full"
               >
                 <FileText className="size-4" />
                 <span>Select File</span>

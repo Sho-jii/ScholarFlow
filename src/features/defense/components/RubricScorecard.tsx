@@ -26,7 +26,7 @@ export function RubricScorecard({
 
       {/* Two Score Gauges */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="rounded-2xl border border-primary/30 bg-primary/5 p-5 space-y-2">
+        <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-primary/5 p-5 space-y-2 shadow-xs backdrop-blur-xs">
           <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
             Domain Mastery & Content Grasp
           </span>
@@ -41,7 +41,7 @@ export function RubricScorecard({
           </p>
         </div>
 
-        <div className="rounded-2xl border border-accent/40 bg-accent/10 p-5 space-y-2">
+        <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-accent/10 p-5 space-y-2 shadow-xs backdrop-blur-xs">
           <span className="text-[10px] uppercase font-bold tracking-wider text-accent-foreground font-semibold">
             Methodological Justification
           </span>
@@ -58,7 +58,7 @@ export function RubricScorecard({
       </div>
 
       {/* Constructive Verbal Critique */}
-      <div className="rounded-2xl border border-border/70 bg-card/60 p-5 space-y-2">
+      <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-card/40 p-5 space-y-2 shadow-xs backdrop-blur-xs">
         <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">
           Panelist Constructive Critique
         </span>
@@ -69,7 +69,7 @@ export function RubricScorecard({
 
       {/* Follow-up Question */}
       {evaluation.nextFollowupQuestion && (
-        <div className="rounded-2xl border border-border/80 bg-muted/40 p-5 space-y-3">
+        <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 p-5 space-y-3 shadow-xs backdrop-blur-xs">
           <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
             <MessageSquare className="size-4" />
             <span>Panel Follow-Up Press</span>

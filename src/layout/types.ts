@@ -30,7 +30,7 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   {
     key: "workspace",
     label: "Workspace",
-    href: "/",
+    href: "/workspace",
     icon: "FolderKanban",
   },
   {

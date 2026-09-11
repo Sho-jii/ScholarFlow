@@ -21,10 +21,10 @@ export function SocraticPromptPills({ onSelectPrompt }: SocraticPromptPillsProps
             key={idx}
             type="button"
             onClick={() => onSelectPrompt(prompt)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-medium border text-left transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-medium border text-left transition-all duration-300 cursor-pointer shadow-xs ${
               prompt.includes("Write my")
-                ? "border-destructive/40 bg-destructive/5 text-destructive hover:bg-destructive/15"
-                : "border-border/80 bg-muted/40 text-foreground hover:border-primary/50 hover:bg-primary/10"
+                ? "border-destructive/30 bg-destructive/5 text-destructive hover:bg-destructive hover:text-white"
+                : "border-black/10 dark:border-white/10 bg-white/80 dark:bg-neutral-900/80 text-foreground hover:bg-[#0d1217] hover:text-white dark:hover:bg-white dark:hover:text-[#0d1217]"
             }`}
           >
             {prompt.includes("Write my") ? "⚠️ Test Anti-Ghostwriting: " : ""}

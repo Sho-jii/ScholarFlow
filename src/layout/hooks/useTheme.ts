@@ -6,21 +6,41 @@ export function useTheme() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const isDarkMode = document.documentElement.classList.contains("dark");
-    setIsDark(isDarkMode);
+    const checkDark = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+
+    checkDark();
+
+    const observer = new MutationObserver(() => {
+      checkDark();
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    window.addEventListener("storage", checkDark);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("storage", checkDark);
+    };
   }, []);
 
   const toggleTheme = useCallback(() => {
     const nextDark = !document.documentElement.classList.contains("dark");
     if (nextDark) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("scholarflow_theme", "dark");
+      localStorage.setItem("axiomproof_theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem("scholarflow_theme", "light");
+      localStorage.setItem("axiomproof_theme", "light");
     }
     setIsDark(nextDark);
   }, []);
 
   return { isDark, toggleTheme };
 }
+
